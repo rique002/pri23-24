@@ -1,0 +1,79 @@
+{
+    "add-field-type": [
+      {
+        "name": "textField",
+        "class": "solr.TextField",
+        "indexAnalyzer": {
+          "tokenizer": {
+            "class": "solr.StandardTokenizerFactory"
+          },
+          "filters": [
+            {"class": "solr.ASCIIFoldingFilterFactory"},
+            {"class": "solr.LowerCaseFilterFactory"},
+            {"class": "solr.PorterStemFilterFactory"},
+            {"class": "solr.EnglishPossessiveFilterFactory"},
+            {"class": "solr.EnglishMinimalStemFilterFactory"},
+            {"class": "solr.StopFilterFactory"}
+
+          ]
+        }
+      }
+    ],
+    "add-field": [
+      {
+        "name": "title",
+        "type": "textField",
+        "indexed": true,
+        "stored": true
+      },
+      {
+        "name": "work-type",
+        "type": "string",
+        "indexed": true,
+        "stored": true
+      },
+      {
+        "name": "salary",
+        "type": "pdouble",
+        "indexed": true,
+        "stored": true
+      },
+      {
+        "name": "description",
+        "type": "textField",
+        "indexed": true,
+        "stored": true
+      },
+      {
+        "name": "pay_period",
+        "type": "string",
+        "indexed": true,
+        "stored": true
+      },
+      {
+        "name": "city",
+        "type": "text_general",
+        "indexed": true,
+        "stored": true
+      },
+      {
+        "name": "country",
+        "type": "string",
+        "indexed": true,
+        "stored": true
+      },
+      {
+        "name": "region",
+        "type": "string",
+        "indexed": true,
+        "stored": true
+      },
+      {
+        "name": "company",
+        "type": "text_general",
+        "indexed": true,
+        "stored": true
+      }
+    ]
+  }
+  
