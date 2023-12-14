@@ -17,6 +17,15 @@
 
           ]
         }
+      },
+      {
+        "name": "knn_vector",
+        "class": "solr.DenseVectorField",
+        "vectorDimension": 768,
+        "similarityFunction": "cosine",
+        "knnAlgorithm": "hnsw",
+        "hnswMaxConnections": 10,
+        "hnswBeamWidth": 40
       }
     ],
     "add-field": [
@@ -71,6 +80,12 @@
       {
         "name": "company",
         "type": "text_general",
+        "indexed": true,
+        "stored": true
+      },
+      {
+        "name": "bert_vector",
+        "type": "knn_vector",
         "indexed": true,
         "stored": true
       }
