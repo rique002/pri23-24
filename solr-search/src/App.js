@@ -17,6 +17,8 @@ import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
 import Checkbox from '@mui/material/Checkbox';
 
+
+
 function App() {
   const [results, setResults] = useState([]);
   const [numTotal, setNumTotal] = useState(0);
@@ -58,7 +60,7 @@ function App() {
     );
   };
   
-  const handleSearch = (searchTerm) => {
+  const keywordSearch = (searchTerm) => {
     if(searchTerm !== query) resetFilters();
     setQuery(searchTerm);
     
@@ -66,13 +68,12 @@ function App() {
     axios.get(`http://localhost:8983/solr/jobs/select`, {
       params: {
         q: searchTerm,
-        defType: 'edismax',
-        qf: 'title^2 description',
-        pf: 'title^2 description',
-        mm: '2<-1 5<80% 8<100%',
-        fq: (jobType === 'All' ? '' : ('work-type:' + jobType + ' AND '))  + '(yearly_salary:['+ minSalary + ' TO ' + maxSalary + ']' + (allowNegotiable ?  'OR yearly_salary:NaN)' : ')'),
         start: start,
         rows: resultsPerPage,
+        defType: 'edismax',
+        qf: 'title^5 description^3',
+        pf: 'title^5 description^3',
+        fq: (jobType === 'All' ? '' : ('work-type:' + jobType + ' AND '))  + '(yearly_salary:['+ minSalary + ' TO ' + maxSalary + ']' + (allowNegotiable ?  'OR yearly_salary:NaN)' : ')'),
         stats: true,
         'stats.field': 'yearly_salary', 
       }
@@ -96,7 +97,7 @@ function App() {
   };
   
   useEffect(() => {
-    handleSearch(query);
+    keywordSearch(query);
   }, [page,query,jobType,minSalary,allowNegotiable]);
 
   const handlePageChange = (event, value) => {
@@ -108,7 +109,7 @@ function App() {
     <Container sx={{padding: 10}}>
       <Stack justifyContent="center" alignItems="center" spacing={2}>
         <Typography variant="h2">Job Offers</Typography>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={keywordSearch} />
           <Grid container spacing={2}>
             <Grid item xs={1.5}>
               <Select
