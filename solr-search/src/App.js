@@ -65,17 +65,16 @@ function App() {
     setQuery(searchTerm);
     
     const start = (page - 1) * resultsPerPage;
-    axios.get(`http://localhost:8983/solr/jobs/select`, {
+    axios.get(`http://localhost:5000/hybrid_search`, {
       params: {
-        q: searchTerm,
+        query: searchTerm,
         start: start,
         rows: resultsPerPage,
-        defType: 'edismax',
-        qf: 'title^5 description^3',
-        pf: 'title^5 description^3',
-        fq: (jobType === 'All' ? '' : ('work-type:' + jobType + ' AND '))  + '(yearly_salary:['+ minSalary + ' TO ' + maxSalary + ']' + (allowNegotiable ?  'OR yearly_salary:NaN)' : ')'),
-        stats: true,
-        'stats.field': 'yearly_salary', 
+        filter_queries: [
+          jobType=='All' ? '' : 'work-type:'+jobType,
+          'yearly_salary:['+ minSalary + ' TO ' + maxSalary + ']',
+          allowNegotiable ? 'yearly_salary:NaN' :'',
+        ]
       }
     })
       .then(response => {
